@@ -35,7 +35,9 @@ jobs:
         working-directory: api
 
       - name: Arrancar la API
-        run: npm start
+        run: |
+          npm start
+          npx wait-on http://localhost:3009 --timeout 5000
         working-directory: api
 
       - name: Instalar dependencias Frontend
@@ -43,7 +45,9 @@ jobs:
         working-directory: frontend
 
       - name: Arrancar el Front
-        run: npm start
+        run: |
+          npm start
+          npx wait-on http://localhost:4200 --timeout 5000
         working-directory: frontend
 
       - name: Ejecutar tests de WDIO

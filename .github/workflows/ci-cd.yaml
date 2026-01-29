@@ -1,0 +1,59 @@
+name: 'CI/CD Campaigns 3000'
+
+on:
+  pull_request:
+    branches:
+      - main
+      - development
+  push:
+    branches:
+      - main
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout front
+        uses: actions/checkout@v6
+        with:
+          path: frontend
+
+      - name: Checkout api
+        uses: actions/checkout@v6
+        with:
+          repository: angelisco1/campaigns-3000-api
+          path: api
+
+      - name: Configura Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - name: Instalar dependencias API
+        run: npm install
+        working-directory: api
+
+      - name: Arrancar la API
+        run: npm start
+        working-directory: api
+
+      - name: Instalar dependencias Frontend
+        run: npm install
+        working-directory: frontend
+
+      - name: Arrancar el Front
+        run: npm start
+        working-directory: frontend
+
+      - name: Ejecutar tests de WDIO
+        run: npm run wdio
+        working-directory: frontend
+
+      - name: Deploy to Render
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.MY_RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.MY_RENDER_API_KEY }}
+          wait-for-success: true

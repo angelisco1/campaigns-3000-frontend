@@ -1,7 +1,9 @@
+import loginPage from "test/pageobjects/login.page"
+
 describe('Login', () => {
 
   beforeEach(async () => {
-    await browser.url('http://localhost:4200/')
+    await loginPage.open()
   })
 
   afterEach(async () => {
@@ -15,26 +17,20 @@ describe('Login', () => {
     const password = 'no-existe'
     const mensajeError = 'INVALID CREDENTIALS'
 
-    await $('[formcontrolname="username"]').setValue(username)
+    await loginPage.login(username, password)
 
-    const inputPw = await $('[formcontrolname="password"]')
-    await inputPw.setValue(password)
-
-    await $('button[type="submit"]').click()
-
-    const error = await $('div.badge-danger')
+    const error = await loginPage.errorForm
     await expect(error).toHaveText(mensajeError)
   })
 
   it('debería de mostrar el error "Usuario requerido" al pulsar en Iniciar sesión sin introducir el usuario', async () => {
     const username = ''
+    const password = '12351124124124'
     const mensajeError = 'Usuario requerido'
 
-    await $('[formcontrolname="username"]').setValue(username)
+    await loginPage.login(username, password)
 
-    await $('button[type="submit"]').click()
-
-    const errorUsuario = await $('form div:first-child span').getText()
+    const errorUsuario = await loginPage.errorUsuario.getText()
     await expect(errorUsuario).toBe(mensajeError)
   })
 
@@ -43,12 +39,9 @@ describe('Login', () => {
     const password = '1234'
     const mensajeError = 'Contraseña requerida'
 
-    await $('[formcontrolname="username"]').setValue(username)
-    await $('[formcontrolname="password"]').setValue(password)
+    await loginPage.login(username, password)
 
-    await $('button[type="submit"]').click()
-
-    const errorUsuario = await $('form div:nth-of-type(2) span').getText()
+    const errorUsuario = await loginPage.errorPassword.getText()
     await expect(errorUsuario).toBe(mensajeError)
 
   })
@@ -58,10 +51,7 @@ describe('Login', () => {
     const password = 'cfalco'
     const rol = 'ADMIN'
 
-    await $('[formcontrolname="username"]').setValue(username)
-    await $('[formcontrolname="password"]').setValue(password)
-
-    await $('button[type="submit"]').click()
+    await loginPage.login(username, password)
 
     const badgeRol = await $('.user-info .badge')
     await expect(badgeRol).toHaveText(rol)
@@ -72,10 +62,7 @@ describe('Login', () => {
     const password = 'kozinski'
     const rol = 'USER'
 
-    await $('[formcontrolname="username"]').setValue(username)
-    await $('[formcontrolname="password"]').setValue(password)
-
-    await $('button[type="submit"]').click()
+    await loginPage.login(username, password)
 
     const badgeRol = await $('.user-info .badge')
     await expect(badgeRol).toHaveText(rol)

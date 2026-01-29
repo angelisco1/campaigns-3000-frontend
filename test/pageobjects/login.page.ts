@@ -20,6 +20,18 @@ class LoginPage extends Page {
         return $('button[type="submit"]');
     }
 
+    public get errorForm() {
+        return $('div.badge-danger')
+    }
+
+    public get errorUsuario() {
+        return $('form div:first-child span')
+    }
+
+    public get errorPassword() {
+        return $('form div:nth-of-type(2) span')
+    }
+
     /**
      * a method to encapsule automation code to interact with the page
      * e.g. to login using username and password

@@ -36,7 +36,7 @@ jobs:
 
       - name: Arrancar la API
         run: |
-          npm start
+          npm start &
           npx wait-on http://localhost:3009 --timeout 5000
         working-directory: api
 
@@ -46,7 +46,7 @@ jobs:
 
       - name: Arrancar el Front
         run: |
-          npm start
+          npm start &
           npx wait-on http://localhost:4200 --timeout 5000
         working-directory: frontend
 

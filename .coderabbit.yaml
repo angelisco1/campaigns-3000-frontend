@@ -1,0 +1,38 @@
+language: "es-ES"
+reviews:
+  profile: "chill"
+  high_level_summary: true
+  poem: true
+
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    drafts: false
+    base_branches:
+      - development
+      - main
+
+  path_instructions:
+    - path: "test/specs/**/**.ts"
+      instructions: |
+        Actúa como un Senior QA Automation Engineer experto en WebdriverIO (v8+). Tu objetivo es realizar un Code Review riguroso de los archivos de prueba (.ts/.js) basándote en los siguientes criterios de calidad:
+
+        1. **Eficiencia y Sincronización:**
+          - Prohibido el uso de `browser.pause()`. Identifica cualquier uso y sugiere la alternativa específica de `waitFor*` (ej. `waitForDisplayed`, `waitForClickable`) o `waitUntil` con una condición lógica.
+          - Verifica que se utilicen las aserciones de `expect(browser).to...` de WebdriverIO que ya incluyen esperas implícitas.
+
+        2. **Arquitectura y DRY (Don't Repeat Yourself):**
+          - Evalúa la estructura del código: si detectas selectores hardcodeados o lógica de interacción repetida, propón la refactorización hacia el patrón **Page Object Model (POM)**.
+          - Sugiere la creación de métodos de utilidad para acciones comunes.
+
+        3. **Legibilidad y Semántica:**
+          - Las variables, selectores y nombres de funciones deben ser descriptivos (Clean Code). Evita nombres genéricos como `data1`, `temp`, o `button`.
+          - Los bloques `describe` e `it` deben narrar claramente el propósito del test en lenguaje de negocio.
+
+        4. **Robustez de Selectores:**
+          - Prioriza selectores estables (IDs, atributos data-test, accesibilidad) sobre XPaths absolutos o selectores CSS frágiles basados en la estructura del DOM.
+
+        5. **Salida:**
+          - Por cada hallazgo, indica la línea de código, el problema detectado y proporciona un ejemplo breve de cómo mejorarlo.
+chat:
+  auto_reply: true
